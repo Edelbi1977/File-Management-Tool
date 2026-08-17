@@ -3,6 +3,7 @@
         xmlns:vm="using:File_Management_Tool.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="using:MyApp.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="File_Management_Tool.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -17,9 +18,32 @@
 
     <Grid RowDefinitions="auto, *, auto">
         <TextBlock Background="LightBlue" VerticalAlignment="Center"  Margin="5" Grid.Row="0" Text="Archive Root Path"></TextBlock>
+        <DataGrid Grid.Row="1"  
+                  ItemsSource="{Binding AllCategories}" 
+                  BorderBrush="Black"
+                  BorderThickness="1"
+                  GridLinesVisibility="All">
+                  <DataGrid.Columns>
+                      <DataGridTextColumn Header="Category Name" Width="Auto" Binding="{Binding Name}"></DataGridTextColumn>
+                      <DataGridTextColumn Header="Files Count" Width="Auto" Binding="{Binding FileCount}"></DataGridTextColumn>
+                      <DataGridTextColumn Header="Total Size" Width="Auto" Binding="{Binding TotalSize}"></DataGridTextColumn>
+                      <!--<DataGridCheckBoxColumn Header="Enabled" Width="Auto"></DataGridCheckBoxColumn>-->
+                  </DataGrid.Columns>
+        </DataGrid>
         <StackPanel Grid.Row="2" Margin="5" Spacing="5"  Orientation="Horizontal" Background="LightGray" Height="60">
-            <Button Background="LightBlue" Foreground="Black" FontStyle="Oblique" Margin="5" Content="Manage Files Categories" Width="250" HorizontalContentAlignment="Center"></Button>
-             <Button Content="Change Root Directory" Width="250" HorizontalContentAlignment="Center"></Button>
+            <Button Background="LightBlue" 
+                    Foreground="Black" 
+                    FontStyle="Oblique" 
+                    Margin="5" 
+                    Content="Manage Files Categories" 
+                    Width="250" 
+                    Click="OnManageCategoriesClick"
+                    HorizontalContentAlignment="Center">
+            </Button>
+             <Button Content="Change Root Directory" 
+                     Width="250" 
+                     Command="{Binding BuildList}"
+                     HorizontalContentAlignment="Center"></Button>
         </StackPanel>
     </Grid>
 

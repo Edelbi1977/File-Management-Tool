@@ -14,26 +14,42 @@ namespace MyApp.Models;
     string _filename = "";
     string _fileextension = "";
     string _DirPath = "";
-       
+
+    string _SourcePath;
     long _filedate = 0;
     long _filesize = 0;
     long _contentsdate = 0;
     byte[] _ContentHash = [];
         
-    bool _archived = false;
+    ArchiveRoot? _ArchManager;
+
+    public bool IsArchived
+    {
+        get
+        {
+            return _ArchManager != null;
+        }
+    }
+
+    public bool Read(Stream Src, ArchiveRoot Mgr)
+    {
+
+        _ArchManager = Mgr;
+        return true;
+    }
 
     public ArchivedFile(string SourceFilePath)
         {
             _id = NewID;
+            _SourcePath = SourceFilePath;
+
             if (File.Exists(SourceFilePath))
             {
                 _filedate = File.GetLastWriteTimeUtc(SourceFilePath).ToBinary();
                 _filesize = new FileInfo(SourceFilePath).Length;
                 _filename = Path.GetFileNameWithoutExtension(SourceFilePath);
                 _fileextension = Path.GetExtension(SourceFilePath);
-                _DirPath = Path.GetDirectoryName(SourceFilePath);
-
-
+                
             using (var stream = File.OpenRead(SourceFilePath))
                 {
                     using (var md5 = System.Security.Cryptography.MD5.Create())
@@ -78,12 +94,23 @@ namespace MyApp.Models;
 
 
     public string Filepath
+    {
+        get
         {
-            get
+            if (_SourcePath != null)
             {
-               return Path.Combine(_DirPath, _filename + _fileextension);
+                return _SourcePath;
+            }
+            else if (_ArchManager != null)
+            {
+                return Path.Combine(_ArchManager.RootPath, _DirPath, _filename + _fileextension);
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
-        }
+    }
 
         public static UInt32 NewID
         {

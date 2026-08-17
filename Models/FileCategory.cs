@@ -1,13 +1,32 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 
 namespace MyApp.Models
 {
-   public partial class FileCategory : ObservableObject
+    public partial class FileCategory : ObservableObject
     {
+
+        public FileCategory(string Name = "")
+        {
+            if (!string.IsNullOrEmpty(Name))
+            {
+                _name = Name;
+
+            }
+
+            _name = "Other Files Types";
+
+            _OrganizingFolders.Add("Year");
+            _OrganizingFolders.Add("Month");
+            _OrganizingFolders.Add("File Type");
+            _OrganizingFolders.Add("Location");
+
+
+        }
 
         [ObservableProperty]
         private string _name = string.Empty;
@@ -21,6 +40,9 @@ namespace MyApp.Models
         [ObservableProperty]
         private UInt64 _TotalSize = 0;
 
+        private readonly ObservableCollection<string> _OrganizingFolders = new ObservableCollection<string>();
+
+        private readonly ObservableCollection<string> _SubFolders = new ObservableCollection<string>();
 
         public bool CheckIn(ArchivedFile SrcFile)
         {
@@ -64,29 +86,8 @@ namespace MyApp.Models
         }
 
 
-        public FileCategory(string Name = "")
-        {
-            if (!string.IsNullOrEmpty(Name))
-            {
-                _name = Name;
-
-            }
-
-        }
-
-        
-        private string Title {
-            get {
-                if (string.IsNullOrEmpty(Name))
-                {
-                    return "Other File Types";
-                } else
-                {
-                     return "";
-                }
-                   
-            } }
-                
+      
+            
               
         public override bool Equals(object? obj)
         {

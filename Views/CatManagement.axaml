@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="File_Management_Tool.CatManagement"
+        Title="File Categories Management">
+  <Grid ColumnDefinitions="80*, 30*" Margin="10" ColumnSpacing="20">
+    <Grid Grid.Column="0" RowDefinitions="auto, *, auto, auto" RowSpacing="10">
+    <TextBlock Grid.Row="0" Text="Categories"></TextBlock>
+    <DataGrid Grid.Row="1"></DataGrid>
+    <TextBox Grid.Row="2"></TextBox>
+    <Button Grid.Row="3" Height="35" 
+            Content="Add New File Category" 
+            HorizontalContentAlignment="Center"
+            HorizontalAlignment="Stretch"></Button>
+</Grid>
+      <Grid Grid.Column="1" RowDefinitions="auto, *, auto, auto" RowSpacing="10">
+          <TextBlock Grid.Row="0" Text="Categories"></TextBlock>
+    <DataGrid Grid.Row="1"></DataGrid>
+    <TextBox Grid.Row="2"></TextBox>
+    <Button Grid.Row="3" Height="35" 
+            Content="Add New Extention" 
+            HorizontalContentAlignment="Center"
+            HorizontalAlignment="Stretch"></Button>
+      </Grid>
+
+  </Grid>
+</Window>
