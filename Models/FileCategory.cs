@@ -13,25 +13,25 @@ namespace MyApp.Models
     {
 
         [ObservableProperty]
-        private string _Extenstion;
+        private string _extenstion;
 
         [ObservableProperty]
-        private bool _Disabled = false;
+        private bool _disabled = false;
 
         [ObservableProperty]
-        private UInt32 _Count = 0;
+        private uint _count = 0;
 
         [ObservableProperty]
-        private UInt64 _TotalSize = 0;
+        private ulong _totalSize = 0;
 
-        public ArchivedFileExt(string FileExt) { 
+        public ArchivedFileExt(string fileExt) { 
         
-            if (string.IsNullOrEmpty(FileExt))
+            if (string.IsNullOrEmpty(fileExt))
             {
                 throw new ArgumentNullException("File Ext can't be null or empty");
             }
 
-            _Extenstion = FileExt;
+            _extenstion = fileExt;
 
         }
 
