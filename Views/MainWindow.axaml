@@ -17,9 +17,14 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="auto, *, auto">
-        <TextBlock Background="LightBlue" VerticalAlignment="Center"  Margin="5" Grid.Row="0" Text="Archive Root Path"></TextBlock>
-        <DataGrid Grid.Row="1"  
-                  ItemsSource="{Binding AllCategories}" 
+        <StackPanel Orientation="Horizontal" Spacing="5" Grid.Row="0">
+             <TextBlock   VerticalAlignment="Center"  Margin="5"  Text="Archive Root:"></TextBlock>
+             <TextBlock   VerticalAlignment="Center"  Margin="5"  Text="{Binding RootPath}"></TextBlock>
+         </StackPanel>
+       
+        <DataGrid Grid.Row="1"
+                  Margin="5"
+                  ItemsSource="{Binding Categories}" 
                   BorderBrush="Black"
                   BorderThickness="1"
                   GridLinesVisibility="All">
@@ -27,8 +32,15 @@
                       <DataGridTextColumn Header="Category Name" Width="Auto" Binding="{Binding Name}"></DataGridTextColumn>
                       <DataGridTextColumn Header="Files Count" Width="Auto" Binding="{Binding FileCount}"></DataGridTextColumn>
                       <DataGridTextColumn Header="Total Size" Width="Auto" Binding="{Binding TotalSize}"></DataGridTextColumn>
-                      <!--<DataGridCheckBoxColumn Header="Enabled" Width="Auto"></DataGridCheckBoxColumn>-->
+                      <DataGridCheckBoxColumn Header="Organize By Year" Width="Auto" Binding="{Binding OrganizeByYear}"></DataGridCheckBoxColumn>
+                       <DataGridCheckBoxColumn Header="Month" Width="Auto" Binding="{Binding OrganizeByMonth}"></DataGridCheckBoxColumn>
+                       <DataGridCheckBoxColumn Header="File Type" Width="Auto" Binding="{Binding OrganizeByType}"></DataGridCheckBoxColumn>
+                       <DataGridCheckBoxColumn Header="Selected" Width="Auto" Binding="{Binding Selected}"></DataGridCheckBoxColumn>
                   </DataGrid.Columns>
+            <DataGrid.Resources>
+        <SolidColorBrush x:Key="DataGridRowSelectedBackgroundBrush" Color="White" />
+        <SolidColorBrush x:Key="DataGridRowSelectedUnfocusedBackgroundBrush" Color="#88AACC" />
+    </DataGrid.Resources>
         </DataGrid>
         <StackPanel Grid.Row="2" Margin="5" Spacing="5"  Orientation="Horizontal" Background="LightGray" Height="60">
             <Button Background="LightBlue" 
@@ -42,7 +54,7 @@
             </Button>
              <Button Content="Change Root Directory" 
                      Width="250" 
-                     Command="{Binding BuildList}"
+                     
                      HorizontalContentAlignment="Center"></Button>
         </StackPanel>
     </Grid>

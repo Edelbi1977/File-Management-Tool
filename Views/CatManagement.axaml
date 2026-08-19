@@ -1,26 +1,57 @@
 <Window xmlns="https://github.com/avaloniaui"
+        xmlns:compilerservices="using:System.Runtime.CompilerServices"
+        
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="using:MyApp.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+       
         x:Class="File_Management_Tool.CatManagement"
         Title="File Categories Management">
+
   <Grid ColumnDefinitions="80*, 30*" Margin="10" ColumnSpacing="20">
     <Grid Grid.Column="0" RowDefinitions="auto, *, auto, auto" RowSpacing="10">
     <TextBlock Grid.Row="0" Text="Categories"></TextBlock>
-    <DataGrid Grid.Row="1"></DataGrid>
-    <TextBox Grid.Row="2"></TextBox>
+    <DataGrid Grid.Row="1" 
+              x:DataType="models:FileCategory" 
+              SelectionChanged="DataGrid_SelectionChanged"
+              Name="DGCat" x:CompileBindings="False">
+    <DataGrid.Columns>
+        <DataGridTextColumn Header="Category Name" Width="Auto" Binding="{Binding Name}"></DataGridTextColumn>
+        <DataGridCheckBoxColumn Header="Year" Width="SizeToHeader" Binding="{Binding OrganizeByYear}"></DataGridCheckBoxColumn>
+         <DataGridCheckBoxColumn Header="Month" Width="SizeToHeader" Binding="{Binding OrganizeByMonth}"></DataGridCheckBoxColumn>
+         <DataGridCheckBoxColumn Header="File Type" Width="SizeToHeader" Binding="{Binding OrganizeByType}"></DataGridCheckBoxColumn>
+    </DataGrid.Columns>
+      
+    </DataGrid>
+        
+    <TextBox Name="TbCategory" Grid.Row="2"></TextBox>
     <Button Grid.Row="3" Height="35" 
-            Content="Add New File Category" 
+            Content="Add New File Category"
+            Click="AddCategory"
             HorizontalContentAlignment="Center"
             HorizontalAlignment="Stretch"></Button>
 </Grid>
       <Grid Grid.Column="1" RowDefinitions="auto, *, auto, auto" RowSpacing="10">
-          <TextBlock Grid.Row="0" Text="Categories"></TextBlock>
-    <DataGrid Grid.Row="1"></DataGrid>
-    <TextBox Grid.Row="2"></TextBox>
-    <Button Grid.Row="3" Height="35" 
+          <TextBlock Grid.Row="0" Name="CatTitle"  Text="Files Extentions"></TextBlock>
+    <DataGrid Name="DgExt"
+        Grid.Row="1" 
+        x:DataType="models:ArchivedFileExt" 
+        x:CompileBindings="False">
+   
+    <DataGrid.Columns>
+        <DataGridTextColumn Header="Extenstion" Width="Auto" Binding="{Binding Extenstion}"></DataGridTextColumn>
+        <DataGridCheckBoxColumn Header="Disabled" Width="Auto" Binding="{Binding Disabled}"></DataGridCheckBoxColumn>
+      </DataGrid.Columns>
+    
+    </DataGrid>
+    <TextBox Grid.Row="2" Name="TbNewExt"></TextBox>
+    <Button Grid.Row="3" Height="35"
+            Name="BtNewExt"
+            IsEnabled="False"
             Content="Add New Extention" 
+            Click="Button_Click"
             HorizontalContentAlignment="Center"
             HorizontalAlignment="Stretch"></Button>
       </Grid>

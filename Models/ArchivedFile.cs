@@ -20,23 +20,8 @@ namespace MyApp.Models;
     long _filesize = 0;
     long _contentsdate = 0;
     byte[] _ContentHash = [];
-        
-    ArchiveRoot? _ArchManager;
-
-    public bool IsArchived
-    {
-        get
-        {
-            return _ArchManager != null;
-        }
-    }
-
-    public bool Read(Stream Src, ArchiveRoot Mgr)
-    {
-
-        _ArchManager = Mgr;
-        return true;
-    }
+    
+     
 
     public ArchivedFile(string SourceFilePath)
         {
@@ -101,10 +86,7 @@ namespace MyApp.Models;
             {
                 return _SourcePath;
             }
-            else if (_ArchManager != null)
-            {
-                return Path.Combine(_ArchManager.RootPath, _DirPath, _filename + _fileextension);
-            }
+            
             else
             {
                 return string.Empty;
