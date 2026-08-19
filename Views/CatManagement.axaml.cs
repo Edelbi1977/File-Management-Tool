@@ -7,21 +7,18 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace File_Management_Tool;
+namespace File_Management_Tool.Views;
 
 public partial class CatManagement : Window
 {
 
-    public ObservableCollection<FileCategory> _LocalCat;
-
-    //public ObservableCollection<FileCategory> Categoris => ArchiveStore.CurrentRoot.Categories;
+   //public ObservableCollection<FileCategory> Categoris => ArchiveStore.CurrentRoot.Categories;
 
     public CatManagement()
     {
 
-        _LocalCat = ArchiveStore.CurrentRoot.Categories;
-        InitializeComponent();
-        LoadItems();
+       InitializeComponent();
+       LoadItems();
 
 
     }
@@ -38,10 +35,10 @@ public partial class CatManagement : Window
         {
             if (!string.IsNullOrEmpty(TbCategory.Text))
             {
-                FileCategory Item = new FileCategory(TbCategory.Text);
-                if (!ArchiveStore.CurrentRoot.Categories.Contains(Item))
+                FileCategory item = new FileCategory(TbCategory.Text);
+                if (!ArchiveStore.CurrentRoot.Categories.Contains(item))
                 {
-                    ArchiveStore.CurrentRoot.Categories.Add(Item);
+                    ArchiveStore.CurrentRoot.Categories.Add(item);
                     TbCategory.Text = "";
                 }
                
@@ -79,8 +76,8 @@ public partial class CatManagement : Window
         {
             try
             {
-                FileCategory X = (FileCategory)DGCat.SelectedItem;
-                return X;
+                var dgCatSelectedItem = (FileCategory)DGCat.SelectedItem;
+                return dgCatSelectedItem;
             }
             catch { 
                 return null;    
@@ -92,25 +89,33 @@ public partial class CatManagement : Window
     {
         try
         {
-           
-            if (string.IsNullOrEmpty(TbNewExt.Text)) { return; } else 
+
+            if (string.IsNullOrEmpty(TbNewExt.Text))
             {
-                ArchivedFileExt Item = new ArchivedFileExt(TbNewExt.Text);
-                if (SelectedCat is null) { return; }
-                if (!SelectedCat.Extensions.Contains(Item))
+                return;
+            }
+            else
+            {
+                ArchivedFileExt item = new ArchivedFileExt(TbNewExt.Text);
+                if (SelectedCat is null)
                 {
-                    SelectedCat.Extensions.Add(Item);
-                   TbNewExt.Text = "";
+                    return;
+                }
+
+                if (!SelectedCat.Extensions.Contains(item))
+                {
+                    SelectedCat.Extensions.Add(item);
+                    TbNewExt.Text = "";
                     RefreshView();
 
                 }
-                                        
+
             }
 
-               } catch (Exception Ex){
-            string msg = Ex.Message;
         }
-        
+        catch
+        {
+        }
 
     }
 }

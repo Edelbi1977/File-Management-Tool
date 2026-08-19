@@ -7,7 +7,7 @@
         xmlns:models="using:MyApp.Models"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
        
-        x:Class="File_Management_Tool.CatManagement"
+        x:Class="File_Management_Tool.Views.CatManagement"
         Title="File Categories Management">
 
   <Grid ColumnDefinitions="80*, 30*" Margin="10" ColumnSpacing="20">

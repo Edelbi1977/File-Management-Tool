@@ -1,106 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace MyApp.Models;
 
-    public class ArchivedFile
+    public abstract class ArchivedFile
     {
 
-    private static UInt32 _nextID = 1;
+    private static uint _nextId = 1;
 
-    UInt32 _id = 0;
-    string _filename = "";
-    string _fileextension = "";
-    string _DirPath = "";
+    private readonly uint _id = 0;
+    private string _filename = "";
+    private readonly string _fileextension = "";
+    private string _dirPath = "";
 
-    string _SourcePath;
-    long _filedate = 0;
-    long _filesize = 0;
-    long _contentsdate = 0;
-    byte[] _ContentHash = [];
+    private string _SourcePath;
+    private long _filedate = 0;
+    private long _filesize = 0;
+    private long _contentsdate = 0;
+    readonly byte[] _ContentHash = [];
     
      
 
-    public ArchivedFile(string SourceFilePath)
+    public ArchivedFile(string sourceFilePath)
         {
-            _id = NewID;
-            _SourcePath = SourceFilePath;
+            _id = NewId;
+            _SourcePath = sourceFilePath;
 
-            if (File.Exists(SourceFilePath))
-            {
-                _filedate = File.GetLastWriteTimeUtc(SourceFilePath).ToBinary();
-                _filesize = new FileInfo(SourceFilePath).Length;
-                _filename = Path.GetFileNameWithoutExtension(SourceFilePath);
-                _fileextension = Path.GetExtension(SourceFilePath);
-                
-            using (var stream = File.OpenRead(SourceFilePath))
-                {
-                    using (var md5 = System.Security.Cryptography.MD5.Create())
-                    {
-
-                        MediaContentHasher MCH = new MediaContentHasher(SourceFilePath);
-                        try
-                        {
-                           
-                            _ContentHash = MCH.ComputeContentHash();
-
-                        }
-                        catch
-                        {
-                            _ContentHash = MCH.ComputeSha1(0,_filesize);
-                        }
-                                                
-                    }
-                }
-            }
+            if (!File.Exists(sourceFilePath)) return;
             
+            _filedate = File.GetLastWriteTimeUtc(sourceFilePath).ToBinary();
+            _filesize = new FileInfo(sourceFilePath).Length;
+            _filename = Path.GetFileNameWithoutExtension(sourceFilePath);
+            _fileextension = Path.GetExtension(sourceFilePath);
+
+            using var stream = File.OpenRead(sourceFilePath);
+            using var md5 = System.Security.Cryptography.MD5.Create();
+            var mch = new MediaContentHasher(sourceFilePath);
+            try
+            {
+                           
+                _ContentHash = mch.ComputeContentHash();
+
+            }
+            catch
+            {
+                _ContentHash = mch.ComputeSha1(0,_filesize);
+            }
+
 
         }
 
-    public ulong FileSize
-    {
-        get
-        {
-            return (ulong)_filesize;
-        }
-    } 
+    public ulong FileSize => (ulong)_filesize;
 
 
-    public string FileExtension
-    {
-        get
-        {
-            return _fileextension;
-        }
-    } 
-
+    public string FileExtension => _fileextension;
 
 
     public string Filepath
     {
         get
         {
-            if (_SourcePath != null)
-            {
-                return _SourcePath;
-            }
-            
-            else
-            {
-                return string.Empty;
-            }
+            return _SourcePath;
         }
     }
 
-        public static UInt32 NewID
+        private static uint NewId
         {
             get
             {
-                UInt32 Res = _nextID;
-                _nextID++;
-                return Res;
+                var res = _nextId;
+                _nextId++;
+                return res;
             }
         }
 
@@ -108,16 +81,11 @@ namespace MyApp.Models;
 
         public override int GetHashCode()
         {
-            if (_ContentHash == null || _ContentHash.Length == 0)
+            if (_ContentHash.Length == 0)
                 return _id.GetHashCode();
 
             // Combine hash bytes into a single int
-            int hash = 17;
-            foreach (byte b in _ContentHash)
-            {
-                hash = hash * 31 + b;
-            }
-            return hash;
+            return _ContentHash.Aggregate(17, (current, b) => current * 31 + b);
         }
 
         public override bool Equals(object? obj)
